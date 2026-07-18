@@ -1,120 +1,140 @@
-# 🏆 AI-Powered Sports Quiz Generator (RAG Agent)
+# 🏆 Sports Quiz — Live
 
-A Streamlit web app that generates factually grounded, multiple-choice sports
-quizzes using **Retrieval-Augmented Generation (RAG)**: it pulls historic
-facts from a local **ChromaDB** vector store and live news from **DuckDuckGo
-web search**, then asks an LLM to write quiz questions using *only* that
-retrieved context — reducing hallucinations.
+A RAG-grounded sports quiz generator. It pulls historic facts from a local
+**ChromaDB** vector store and live news from **DuckDuckGo web search**, then
+asks **Gemini** to write multiple-choice questions using *only* that
+retrieved context — reducing hallucinated stats. Wrapped in a
+scoreboard-themed Streamlit UI.
+
+**Live demo:** https://sports-quiz-agent-anilhr.streamlit.app/
+**Source:** https://github.com/aniilhr/sports-quiz-agent
 
 ## How it works
-
-```
 User picks Sport + Difficulty
-        │
-        ▼
- ChromaDB (local facts) + DuckDuckGo (live web) ──► combined context
-        │
-        ▼
- LLM writes 4 MCQs strictly from that context
-        │
-        ▼
- Streamlit displays each question as a card with click-to-reveal feedback
-```
+│
+▼
+ChromaDB (local facts) + DuckDuckGo (live web) ──► combined context
+│
+▼
+Gemini writes 4 MCQs strictly from that context
+│
+▼
+Streamlit shows each question as a card, with click-to-reveal feedback
+and a live "broadcast ticker" of the facts actually used
 
 ## Project structure
-
-```
 sports-quiz-agent/
-├── .env.example        # Template for your API key — copy to .env
+├── .env.example        # template for your API key — copy to .env
 ├── requirements.txt
 ├── README.md
 ├── data/
 │   └── sports_facts.json
 ├── chroma_db/           # auto-created on first run (vector store)
 ├── src/
-│   ├── __init__.py
+│   ├── init.py
 │   ├── config.py
 │   ├── database.py
 │   ├── search.py
 │   └── generator.py
 └── app.py
+
+## Local setup
+
+1. **Python 3.11 is required** (not 3.12+) — `chromadb` and
+   `sentence-transformers` depend on packages that don't yet ship prebuilt
+   wheels for newer Python versions.
+
+```bash
+   py -0                 # check installed versions on Windows
 ```
 
-## Setup
+   If 3.11 isn't listed, install it from
+   https://www.python.org/downloads/release/python-3119/
 
-1. **Create and activate a virtual environment** (Python 3.9–3.11 recommended):
+2. **Create and activate a virtual environment:**
 
-   ```bash
-   # macOS / Linux
-   python3 -m venv venv
-   source venv/bin/activate
-
+```bash
    # Windows
-   python -m venv venv
+   py -3.11 -m venv venv
    venv\Scripts\activate
-   ```
 
-2. **Install dependencies:**
+   # macOS / Linux
+   python3.11 -m venv venv
+   source venv/bin/activate
+```
 
-   ```bash
-   pip install --upgrade pip
+3. **Install dependencies:**
+
+```bash
+   python -m pip install --upgrade pip
    pip install -r requirements.txt
-   ```
+```
 
-3. **Add your API key:**
+4. **Add your Gemini API key:**
 
-   ```bash
-   cp .env.example .env
-   ```
+```bash
+   copy .env.example .env      # Windows
+   cp .env.example .env        # macOS / Linux
+```
 
-   Then open `.env` and paste your real OpenAI key:
+   Open `.env` and paste your real key (get one free at
+   https://aistudio.google.com/apikey):
+GEMINI_API_KEY=AIza...
 
-   ```
-   OPENAI_API_KEY=sk-proj-...
-   ```
+5. **Run it:**
 
-   Get a key at https://platform.openai.com/api-keys — never commit this file
-   (it's already in `.gitignore`).
-
-4. **Run the app:**
-
-   ```bash
+```bash
    streamlit run app.py
-   ```
+```
 
-   Your browser should open automatically at `http://localhost:8501`.
+## Deploying to Streamlit Community Cloud
 
-## Usage
-
-1. Pick a **Sport** and **Difficulty** in the sidebar.
-2. Click **Generate Fresh Quiz**.
-3. Answer each question, then click **Reveal Answer** for instant feedback
-   and a source-grounded explanation.
-4. Expand **🔍 Inspect Ground Truth** to see exactly which facts (local +
-   web) the quiz was built from.
+1. Push the repo to GitHub (make sure `.env`, `venv/`, and `chroma_db/` stay
+   out of git — they're already in `.gitignore`).
+2. Go to **share.streamlit.io** → **New app** → pick the repo, branch
+   `main`, main file path `app.py`.
+3. Under **Advanced settings**:
+   - Python version: **3.11**
+   - Secrets:
+```toml
+     GEMINI_API_KEY = "your-actual-key-here"
+```
+4. Click **Deploy**.
 
 ## Customizing the knowledge base
 
-Add more entries to `data/sports_facts.json` (same `{"sport": ..., "fact": ...}`
-shape) and delete the `chroma_db/` folder so it re-populates on next run.
-Add new sports there **and** to the `selectbox` options list in `app.py`.
+Add more entries to `data/sports_facts.json` (same
+`{"sport": ..., "fact": ...}` shape), then delete the local `chroma_db/`
+folder so it re-populates on next run. Add new sports there **and** to the
+`SPORT_ICONS` dict at the top of `app.py`.
 
 ## Troubleshooting
 
-- **ChromaDB sqlite error** (common on some Linux/Windows setups):
-  ```bash
+- **ChromaDB sqlite error:**
+```bash
   pip install pysqlite3-binary
-  ```
-  `src/database.py` will automatically detect and use it — no code changes needed.
+```
+  `src/database.py` auto-detects and uses it — no code changes needed.
 
 - **`duckduckgo_search` import error:** the package was renamed to `ddgs`
-  upstream. `src/search.py` already falls back automatically, but if pip
-  can't find `duckduckgo-search` at all, run `pip install ddgs` instead.
+  upstream. `src/search.py` falls back automatically; if pip can't find
+  `duckduckgo-search` at all, run `pip install ddgs` instead.
 
-- **Quiz shows raw text instead of interactive cards:** this means the LLM's
-  output didn't match the expected `Question:/A)/B).../Correct Answer:` format.
-  Try regenerating, or switch the model in `src/generator.py` to one with
-  JSON mode (`response_format={"type": "json_object"}`) for stricter output.
+- **`ModuleNotFoundError: No module named '_cffi_backend'`** (seen on some
+  Windows installs): the `cryptography`/`cffi` install got corrupted.
+```bash
+  pip uninstall -y cryptography cffi
+  pip install --upgrade --force-reinstall cffi
+  pip install --upgrade --force-reinstall cryptography
+```
 
-- **"API Key is missing" warning:** double-check `.env` exists (not just
-  `.env.example`) and contains `OPENAI_API_KEY=...` with no quotes.
+- **"Invalid format: please enter valid TOML"** when pasting Streamlit
+  Cloud secrets: make sure the value is in quotes, e.g.
+  `GEMINI_API_KEY = "your-key"` — not `GEMINI_API_KEY=your-key`.
+
+- **Quiz shows raw text instead of interactive cards:** the model's output
+  didn't match the expected `Question:/A)/B).../Correct Answer:` format.
+  Regenerate, or switch to a model/config with stricter structured output.
+
+- **"GEMINI_API_KEY is missing" error:** confirm `.env` exists locally (not
+  just `.env.example`), or that the Cloud secret is saved correctly.

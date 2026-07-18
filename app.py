@@ -23,7 +23,13 @@ prepare_knowledge_base()
 st.set_page_config(page_title="Sports Quiz — Live", page_icon="🏆", layout="centered")
 
 # ---------------------------------------------------------------------------
-# 3. Theme — scoreboard / broadcast aesthetic
+# 3. Theme — most of the heavy lifting (dropdowns, alerts, sliders, code
+#    blocks) is handled by .streamlit/config.toml, which sets Streamlit's
+#    *native* dark theme. That's what actually fixes text disappearing
+#    against white backgrounds — those widgets render in layers that plain
+#    CSS overrides can't reliably reach. This CSS only adds the custom
+#    scoreboard look on top: fonts, the header, transparent glass cards,
+#    and the ticker.
 # ---------------------------------------------------------------------------
 st.markdown(
     """
@@ -31,60 +37,44 @@ st.markdown(
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
     :root {
-        --charcoal: #14181C;
-        --charcoal-2: #1B2126;
-        --slate: #232B31;
-        --chalk: #EDEDE6;
-        --chalk-dim: #9BA3A9;
         --amber: #FFB000;
-        --amber-dim: rgba(255,176,0,0.16);
-        --turf: #2FBE72;
-        --foul: #FF5A4E;
-        --hairline: rgba(237,237,230,0.10);
+        --amber-dim: rgba(255, 176, 0, 0.16);
+        --foul: #FF6B5E;
+        --glass-bg: rgba(255, 255, 255, 0.035);
+        --glass-border: rgba(255, 255, 255, 0.09);
+        --glass-bg-strong: rgba(255, 255, 255, 0.05);
     }
 
-    html, body, .stApp {
-        background: var(--charcoal) !important;
+    .stApp {
+        background: radial-gradient(circle at 15% 0%, #1b2126 0%, #12161a 55%, #0d1013 100%);
         font-family: 'IBM Plex Sans', sans-serif;
     }
-    .stApp, .stApp p, .stApp li, .stApp label, .stApp span, .stMarkdown {
-        color: var(--chalk);
-    }
-    #MainMenu, footer, header[data-testid="stHeader"] { visibility: hidden; height: 0; }
+
+    /* keep the sidebar-toggle usable on mobile — just make the header blend in */
+    header[data-testid="stHeader"] { background: transparent; }
+    #MainMenu, footer { visibility: hidden; }
 
     /* ---------- Sidebar ---------- */
-    [data-testid="stSidebar"] {
-        background: var(--charcoal-2);
-        border-right: 1px solid var(--hairline);
-    }
-    [data-testid="stSidebar"] * { color: var(--chalk) !important; }
-
     .panel-label {
         font-family: 'Oswald', sans-serif;
         font-weight: 600;
         letter-spacing: 0.12em;
         font-size: 0.8rem;
-        color: var(--amber) !important;
+        color: var(--amber);
         border-bottom: 2px solid var(--amber);
         padding-bottom: 6px;
         margin: 0.4rem 0 1.2rem 0;
     }
 
-    [data-testid="stSidebar"] [data-baseweb="select"] > div {
-        background: var(--slate) !important;
-        border: 1px solid var(--hairline) !important;
-        border-radius: 6px !important;
-    }
-
     /* ---------- Buttons ---------- */
     .stButton > button {
         background: var(--amber);
-        color: var(--charcoal) !important;
+        color: #12161A;
         font-family: 'Oswald', sans-serif;
         font-weight: 600;
         letter-spacing: 0.04em;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         padding: 0.55rem 1rem;
         transition: transform 0.08s ease, box-shadow 0.15s ease;
     }
@@ -96,20 +86,24 @@ st.markdown(
         outline: 3px solid var(--amber);
         outline-offset: 2px;
     }
+    .stButton > button p { color: #12161A !important; }
 
-    /* ---------- Scoreboard header ---------- */
+    /* ---------- Scoreboard header (transparent card) ---------- */
     .scoreboard-header {
-        background: linear-gradient(160deg, var(--charcoal-2), var(--charcoal));
-        border: 1px solid var(--hairline);
-        border-radius: 10px;
-        padding: 1.6rem 1.8rem;
-        margin-bottom: 1.2rem;
+        background: var(--glass-bg-strong);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 1.7rem 1.9rem;
+        margin-bottom: 1.3rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
     }
     .sb-eyebrow {
         font-family: 'IBM Plex Mono', monospace;
         font-size: 0.72rem;
         letter-spacing: 0.14em;
-        color: var(--chalk-dim) !important;
+        opacity: 0.65;
         margin-bottom: 0.4rem;
     }
     .sb-title {
@@ -118,26 +112,23 @@ st.markdown(
         font-size: 2.3rem;
         letter-spacing: 0.02em;
         margin: 0;
-        color: var(--chalk) !important;
         text-transform: uppercase;
     }
-    .sb-amber { color: var(--amber) !important; text-shadow: 0 0 18px var(--amber-dim); }
-    .sb-sub {
-        color: var(--chalk-dim) !important;
-        margin-top: 0.5rem;
-        font-size: 0.95rem;
-    }
+    .sb-amber { color: var(--amber); text-shadow: 0 0 18px var(--amber-dim); }
+    .sb-sub { opacity: 0.7; margin-top: 0.5rem; font-size: 0.95rem; }
 
-    /* ---------- Live ticker (signature element) ---------- */
+    /* ---------- Live ticker (signature element, transparent) ---------- */
     .ticker-wrap {
         display: flex;
         align-items: center;
-        background: #0F1215;
-        border: 1px solid var(--hairline);
-        border-radius: 6px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
         overflow: hidden;
         margin: 0.4rem 0 1.4rem 0;
-        height: 38px;
+        height: 40px;
     }
     .live-badge {
         flex-shrink: 0;
@@ -145,9 +136,9 @@ st.markdown(
         font-weight: 600;
         font-size: 0.72rem;
         letter-spacing: 0.08em;
-        color: var(--foul) !important;
-        padding: 0 0.8rem;
-        border-right: 1px solid var(--hairline);
+        color: var(--foul);
+        padding: 0 0.9rem;
+        border-right: 1px solid var(--glass-border);
         display: flex;
         align-items: center;
         gap: 6px;
@@ -165,7 +156,7 @@ st.markdown(
         display: inline-block;
         font-family: 'IBM Plex Mono', monospace;
         font-size: 0.8rem;
-        color: var(--amber) !important;
+        color: var(--amber);
         padding-left: 100%;
         animation: ticker-scroll 28s linear infinite;
     }
@@ -184,74 +175,78 @@ st.markdown(
         font-weight: 600;
         font-size: 1.05rem;
         letter-spacing: 0.05em;
-        color: var(--chalk) !important;
         border-left: 4px solid var(--amber);
         padding-left: 0.7rem;
         margin: 0.6rem 0 1rem 0;
         text-transform: uppercase;
     }
 
-    /* ---------- Quiz cards ---------- */
+    /* ---------- Quiz cards — clean transparent glass ---------- */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background: var(--slate) !important;
-        border: 1px solid var(--hairline) !important;
-        border-radius: 10px !important;
-        padding: 0.5rem 0.3rem !important;
-        margin-bottom: 1rem !important;
+        background: var(--glass-bg) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--glass-border) !important;
+        border-radius: 14px !important;
+        padding: 0.6rem 0.4rem !important;
+        margin-bottom: 1.1rem !important;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
     }
     .q-tag {
         display: inline-block;
         font-family: 'IBM Plex Mono', monospace;
         font-size: 0.7rem;
-        color: var(--charcoal);
+        color: #12161A;
         background: var(--amber);
-        border-radius: 4px;
-        padding: 2px 8px;
+        border-radius: 5px;
+        padding: 2px 9px;
         margin-bottom: 0.5rem;
         letter-spacing: 0.05em;
     }
     .q-text {
         font-weight: 500;
         font-size: 1.02rem;
-        color: var(--chalk) !important;
         margin-bottom: 0.5rem;
-        line-height: 1.4;
+        line-height: 1.45;
     }
     .explain-box {
         font-size: 0.9rem;
-        color: var(--chalk-dim) !important;
-        background: var(--charcoal-2);
+        opacity: 0.85;
+        background: var(--glass-bg);
         border-left: 3px solid var(--amber);
-        border-radius: 4px;
-        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        padding: 0.65rem 0.85rem;
         margin-top: 0.5rem;
     }
 
-    /* radio options styled like roster rows */
+    /* radio options — subtle transparent roster rows */
     .stRadio [role="radiogroup"] label {
-        background: var(--charcoal-2);
-        border: 1px solid var(--hairline);
-        border-radius: 6px;
-        padding: 0.45rem 0.8rem;
-        margin-bottom: 0.4rem;
-        transition: border-color 0.15s ease;
-    }
-    .stRadio [role="radiogroup"] label:hover { border-color: var(--amber); }
-
-    /* expander */
-    [data-testid="stExpander"] {
-        background: var(--charcoal-2);
-        border: 1px solid var(--hairline);
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
         border-radius: 8px;
+        padding: 0.5rem 0.85rem;
+        margin-bottom: 0.4rem;
+        transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .stRadio [role="radiogroup"] label:hover {
+        border-color: var(--amber);
+        background: rgba(255, 176, 0, 0.06);
+    }
+
+    /* expander — transparent card too */
+    [data-testid="stExpander"] {
+        background: var(--glass-bg) !important;
+        border: 1px solid var(--glass-border) !important;
+        border-radius: 12px !important;
     }
 
     /* empty state */
     .empty-state {
-        color: var(--chalk-dim) !important;
+        opacity: 0.6;
         text-align: center;
         padding: 3rem 1rem;
-        border: 1px dashed var(--hairline);
-        border-radius: 10px;
+        border: 1px dashed var(--glass-border);
+        border-radius: 14px;
     }
     </style>
     """,

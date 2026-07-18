@@ -20,7 +20,12 @@ prepare_knowledge_base()
 # ---------------------------------------------------------------------------
 # 2. Page config
 # ---------------------------------------------------------------------------
-st.set_page_config(page_title="Sports Quiz — Live", page_icon="🏆", layout="centered")
+st.set_page_config(
+    page_title="Sports Quiz — Live",
+    page_icon="🏆",
+    layout="centered",
+    initial_sidebar_state="expanded",
+)
 
 # ---------------------------------------------------------------------------
 # 3. Theme — most of the heavy lifting (dropdowns, alerts, sliders, code

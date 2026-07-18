@@ -1,50 +1,64 @@
 [
-  {
-    "sport": "Cricket",
-    "fact": "The first official cricket Test match was played in 1877 between Australia and England at the Melbourne Cricket Ground (MCG). Australia won by 45 runs."
-  },
-  {
-    "sport": "Cricket",
-    "fact": "The Cricket World Cup was first held in 1975 in England, won by the West Indies, who defeated Australia in the final at Lord's."
-  },
-  {
-    "sport": "Cricket",
-    "fact": "India won the ICC Cricket World Cup in 2011 on home soil, defeating Sri Lanka in the final at Wankhede Stadium, Mumbai."
-  },
-  {
-    "sport": "Cricket",
-    "fact": "A standard cricket pitch is 22 yards (20.12 meters) long, and a Test match innings can last up to 5 days."
-  },
-  {
-    "sport": "Badminton",
-    "fact": "The Thomas Cup, established in 1948, is the premier international men's team badminton championship. India won its historic first title in 2022 by defeating Indonesia 3-0."
-  },
-  {
-    "sport": "Badminton",
-    "fact": "Badminton became an official Olympic sport at the 1992 Barcelona Games, with singles and doubles events for both men and women."
-  },
-  {
-    "sport": "Badminton",
-    "fact": "The shuttlecock, or 'birdie', traditionally has 16 goose feathers attached to a cork base and can travel over 300 km/h when smashed by elite players."
-  },
-  {
-    "sport": "Badminton",
-    "fact": "China has historically dominated Olympic badminton, winning the most gold medals across singles and doubles events since the sport's Olympic debut."
-  },
-  {
-    "sport": "Football",
-    "fact": "The FIFA World Cup was first held in 1930. Uruguay hosted and won the tournament, defeating Argentina 4-2 in the final match in Montevideo."
-  },
-  {
-    "sport": "Football",
-    "fact": "Brazil has won the FIFA World Cup a record five times: 1958, 1962, 1970, 1994, and 2002."
-  },
-  {
-    "sport": "Football",
-    "fact": "A standard football (soccer) match consists of two 45-minute halves, for a total of 90 minutes plus stoppage time."
-  },
-  {
-    "sport": "Football",
-    "fact": "Argentina won the 2022 FIFA World Cup in Qatar, defeating France on penalties after a 3-3 draw, with Lionel Messi lifting the trophy."
-  }
+  {"sport": "Cricket", "fact": "The first official cricket Test match was played in 1877 between Australia and England at the Melbourne Cricket Ground (MCG). Australia won by 45 runs."},
+  {"sport": "Cricket", "fact": "The Cricket World Cup was first held in 1975 in England, won by the West Indies, who defeated Australia in the final at Lord's."},
+  {"sport": "Cricket", "fact": "India won the ICC Cricket World Cup in 2011 on home soil, defeating Sri Lanka in the final at Wankhede Stadium, Mumbai."},
+  {"sport": "Cricket", "fact": "A standard cricket pitch is 22 yards (20.12 meters) long, and a Test match innings can last up to 5 days."},
+  {"sport": "Cricket", "fact": "The Indian Premier League (IPL), founded in 2008, is one of the most popular Twenty20 cricket leagues in the world."},
+  {"sport": "Cricket", "fact": "The Marylebone Cricket Club (MCC), formed in 1787 in London, was long regarded as the guardian of cricket's official Laws of the Game."},
+  {"sport": "Cricket", "fact": "Twenty20 (T20) cricket was introduced in England in 2003 as a fast-paced, shorter format of the sport."},
+  {"sport": "Cricket", "fact": "The 'Ashes' is a storied Test cricket rivalry between England and Australia, named after a satirical mock obituary published in 1882."},
+
+  {"sport": "Football", "fact": "The FIFA World Cup was first held in 1930. Uruguay hosted and won the tournament, defeating Argentina 4-2 in the final match in Montevideo."},
+  {"sport": "Football", "fact": "Brazil has won the FIFA World Cup a record five times: 1958, 1962, 1970, 1994, and 2002."},
+  {"sport": "Football", "fact": "A standard football (soccer) match consists of two 45-minute halves, for a total of 90 minutes plus stoppage time."},
+  {"sport": "Football", "fact": "Argentina won the 2022 FIFA World Cup in Qatar, defeating France on penalties after a 3-3 draw, with Lionel Messi lifting the trophy."},
+  {"sport": "Football", "fact": "The English Premier League was formed in 1992, replacing the old First Division as the top tier of English football."},
+  {"sport": "Football", "fact": "The UEFA Champions League, originally called the European Cup, was established in 1955 to showcase Europe's top football clubs."},
+  {"sport": "Football", "fact": "Red and yellow cards were introduced to football at the 1970 FIFA World Cup to help officials communicate decisions clearly to players."},
+  {"sport": "Football", "fact": "The offside rule is one of football's most debated regulations, designed to prevent attackers from gaining an unfair positional advantage near the opponent's goal."},
+
+  {"sport": "Badminton", "fact": "The Thomas Cup, established in 1948, is the premier international men's team badminton championship. India won its historic first title in 2022 by defeating Indonesia 3-0."},
+  {"sport": "Badminton", "fact": "Badminton became an official Olympic sport at the 1992 Barcelona Games, with singles and doubles events for both men and women."},
+  {"sport": "Badminton", "fact": "The shuttlecock, or 'birdie', traditionally has 16 goose feathers attached to a cork base and can travel over 300 km/h when smashed by elite players."},
+  {"sport": "Badminton", "fact": "China has historically been one of the most dominant nations in Olympic badminton, winning golds across both singles and doubles events."},
+  {"sport": "Badminton", "fact": "The Badminton World Federation (BWF), originally founded as the International Badminton Federation in 1934, governs the sport globally."},
+  {"sport": "Badminton", "fact": "The Uber Cup, badminton's premier women's team event, was first held in 1956-57 and was won by the United States."},
+  {"sport": "Badminton", "fact": "A badminton court is narrower for singles play than for doubles play, one of the few racquet sports with this distinction."},
+  {"sport": "Badminton", "fact": "Indonesia and China are traditionally considered among the strongest nations in international badminton history."},
+
+  {"sport": "Tennis", "fact": "Tennis in its modern form was invented in Birmingham, England in 1873 by Major Walter Clopton Wingfield, who originally called it 'Sphairistike'."},
+  {"sport": "Tennis", "fact": "Wimbledon, first held in 1877, is the oldest tennis tournament in the world and the only Grand Slam still played on grass."},
+  {"sport": "Tennis", "fact": "Tennis has four Grand Slam tournaments each year: the Australian Open, the French Open (Roland Garros), Wimbledon, and the US Open."},
+  {"sport": "Tennis", "fact": "A standard tennis match is played as the best of three sets for most events, or best of five sets for men's Grand Slam singles matches."},
+  {"sport": "Tennis", "fact": "Tennis returned to the Olympics at the 1988 Seoul Games after being absent from the program for 64 years."},
+  {"sport": "Tennis", "fact": "The French Open, held at Roland Garros in Paris, is the only Grand Slam played on clay courts."},
+  {"sport": "Tennis", "fact": "A 'love' score in tennis, meaning zero points, is believed to derive from the French word 'l'oeuf' (egg), resembling the shape of a zero."},
+  {"sport": "Tennis", "fact": "The Davis Cup, tennis's premier international men's team competition, was first contested in 1900 between the United States and Great Britain."},
+
+  {"sport": "Basketball", "fact": "Basketball was invented in 1891 by Canadian physical education teacher James Naismith in Springfield, Massachusetts, USA, using peach baskets as goals."},
+  {"sport": "Basketball", "fact": "The NBA was founded in 1946 as the Basketball Association of America, adopting the name National Basketball Association in 1949 after merging with a rival league."},
+  {"sport": "Basketball", "fact": "The FIBA Basketball World Cup was first held in 1950 in Argentina, with the host nation winning the inaugural title."},
+  {"sport": "Basketball", "fact": "Basketball made its Olympic debut as a full medal sport at the 1936 Berlin Olympics."},
+  {"sport": "Basketball", "fact": "A standard NBA game consists of four 12-minute quarters, while FIBA international games use four 10-minute quarters."},
+  {"sport": "Basketball", "fact": "The three-point line was introduced to the NBA in the 1979-80 season, changing offensive strategy across the sport."},
+  {"sport": "Basketball", "fact": "The 1992 US Olympic team, nicknamed the 'Dream Team', was the first to feature active NBA professionals at the Olympics."},
+  {"sport": "Basketball", "fact": "A basketball hoop is regulated at a height of 10 feet (3.05 meters) from the court surface at all levels of organized play."},
+
+  {"sport": "Hockey", "fact": "Field hockey traces its modern rules to England, where the Hockey Association was formed in 1886 to standardize the sport."},
+  {"sport": "Hockey", "fact": "India won 8 Olympic gold medals in field hockey between 1928 and 1980, one of the most dominant runs in Olympic history."},
+  {"sport": "Hockey", "fact": "The Men's Hockey World Cup was first held in 1971 in Barcelona, with Pakistan winning the inaugural tournament."},
+  {"sport": "Hockey", "fact": "A standard field hockey match is played over two halves, traditionally 35 minutes each at the international level."},
+  {"sport": "Hockey", "fact": "Field hockey has been part of the Olympic program for men since 1908 and for women since 1980."},
+  {"sport": "Hockey", "fact": "Astroturf and other synthetic surfaces became standard for elite field hockey starting in the 1970s, significantly increasing the pace of the game."},
+  {"sport": "Hockey", "fact": "The International Hockey Federation (FIH), founded in 1924, governs field hockey and indoor hockey worldwide."},
+  {"sport": "Hockey", "fact": "A 'penalty corner' in field hockey is awarded for infractions near the goal and is one of the sport's key attacking set-pieces."},
+
+  {"sport": "Volleyball", "fact": "Volleyball was invented in 1895 by William G. Morgan in Holyoke, Massachusetts, USA, originally under the name 'Mintonette'."},
+  {"sport": "Volleyball", "fact": "The Federation Internationale de Volleyball (FIVB), founded in 1947, is the sport's global governing body."},
+  {"sport": "Volleyball", "fact": "Volleyball became an official Olympic sport for both men and women at the 1964 Tokyo Olympics."},
+  {"sport": "Volleyball", "fact": "A standard indoor volleyball match is played best-of-five sets, with the first four sets played to 25 points."},
+  {"sport": "Volleyball", "fact": "Beach volleyball, a variant played on sand with two-player teams, joined the Olympic program at the 1996 Atlanta Games."},
+  {"sport": "Volleyball", "fact": "The rally scoring system, where a point is scored on every serve regardless of which team served, was adopted internationally in 1999."},
+  {"sport": "Volleyball", "fact": "A volleyball net stands at different regulation heights for men's and women's competitions, reflecting differences in average reach."},
+  {"sport": "Volleyball", "fact": "Brazil and the former Soviet Union/Russia are historically among the most successful nations in international volleyball competition."}
 ]

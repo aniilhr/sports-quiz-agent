@@ -12,13 +12,13 @@ def compile_quiz_data(sport, difficulty):
     1. Gathers context from ChromaDB (Historical).
     2. Gathers context from DuckDuckGo (Live news).
     3. Blends them inside a grounded prompt.
-    4. Connects to Gemini and generates the structured quiz.
+    4. Connects to OpenAI and generates the structured quiz.
 
     Returns a tuple: (raw_quiz_text, unified_context_used)
     """
     # Create query to run against ChromaDB
     db_query = f"{sport} history cup championships rules records"
-    db_matches = query_historic_facts(sport=sport, query_text=db_query, n_results=2)
+    db_matches = query_historic_facts(sport=sport, query_text=db_query, n_results=5)
     db_context = "\n".join(db_matches) if db_matches else "No offline historic data recorded."
 
     # Search the live web
@@ -45,7 +45,7 @@ def compile_quiz_data(sport, difficulty):
     )
 
     user_prompt = (
-        f"Generate exactly 4 unique multiple-choice questions for the sport: {sport}.\n"
+        f"Generate exactly 10 unique multiple-choice questions for the sport: {sport}.\n"
         f"Difficulty target: {difficulty}.\n\n"
         "Format each question EXACTLY as follows so my program can parse it "
         "(no extra commentary, no numbering, no markdown bold):\n"

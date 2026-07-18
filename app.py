@@ -4,7 +4,15 @@ import streamlit as st
 from src.generator import compile_quiz_data, parse_quiz_text
 from src.database import setup_and_populate_db
 
-SPORT_ICONS = {"Cricket": "🏏", "Football": "⚽", "Badminton": "🏸"}
+SPORT_ICONS = {
+    "Cricket": "🏏",
+    "Football": "⚽",
+    "Badminton": "🏸",
+    "Tennis": "🎾",
+    "Basketball": "🏀",
+    "Hockey": "🏑",
+    "Volleyball": "🏐",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -293,7 +301,8 @@ if "quiz_output" not in st.session_state:
     st.session_state.parsed_questions = []
     st.session_state.revealed = {}
 
-generate_clicked = st.sidebar.button("⚡ GENERATE QUIZ", use_container_width=True)
+button_label = "🔁 REGENERATE QUIZ" if st.session_state.quiz_output else "⚡ GENERATE QUIZ"
+generate_clicked = st.sidebar.button(button_label, use_container_width=True)
 
 if generate_clicked:
     with st.spinner("Pulling facts from the archive & the live wire..."):

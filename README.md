@@ -10,19 +10,24 @@ scoreboard-themed Streamlit UI.
 **Source:** https://github.com/aniilhr/sports-quiz-agent
 
 ## How it works
+
+```
 User picks Sport + Difficulty
-│
-▼
-ChromaDB (local facts) + DuckDuckGo (live web) ──► combined context
-│
-▼
-Gemini writes 4 MCQs strictly from that context
-│
-▼
-Streamlit shows each question as a card, with click-to-reveal feedback
-and a live "broadcast ticker" of the facts actually used
+        │
+        ▼
+ ChromaDB (local facts) + DuckDuckGo (live web) ──► combined context
+        │
+        ▼
+ Gemini writes 4 MCQs strictly from that context
+        │
+        ▼
+ Streamlit shows each question as a card, with click-to-reveal feedback
+ and a live "broadcast ticker" of the facts actually used
+```
 
 ## Project structure
+
+```
 sports-quiz-agent/
 ├── .env.example        # template for your API key — copy to .env
 ├── requirements.txt
@@ -31,12 +36,13 @@ sports-quiz-agent/
 │   └── sports_facts.json
 ├── chroma_db/           # auto-created on first run (vector store)
 ├── src/
-│   ├── init.py
+│   ├── __init__.py
 │   ├── config.py
 │   ├── database.py
 │   ├── search.py
 │   └── generator.py
 └── app.py
+```
 
 ## Local setup
 
@@ -44,16 +50,16 @@ sports-quiz-agent/
    `sentence-transformers` depend on packages that don't yet ship prebuilt
    wheels for newer Python versions.
 
-```bash
+   ```bash
    py -0                 # check installed versions on Windows
-```
+   ```
 
    If 3.11 isn't listed, install it from
    https://www.python.org/downloads/release/python-3119/
 
 2. **Create and activate a virtual environment:**
 
-```bash
+   ```bash
    # Windows
    py -3.11 -m venv venv
    venv\Scripts\activate
@@ -61,31 +67,34 @@ sports-quiz-agent/
    # macOS / Linux
    python3.11 -m venv venv
    source venv/bin/activate
-```
+   ```
 
 3. **Install dependencies:**
 
-```bash
+   ```bash
    python -m pip install --upgrade pip
    pip install -r requirements.txt
-```
+   ```
 
 4. **Add your Gemini API key:**
 
-```bash
+   ```bash
    copy .env.example .env      # Windows
    cp .env.example .env        # macOS / Linux
-```
+   ```
 
    Open `.env` and paste your real key (get one free at
    https://aistudio.google.com/apikey):
-GEMINI_API_KEY=AIza...
+
+   ```
+   GEMINI_API_KEY=AIza...
+   ```
 
 5. **Run it:**
 
-```bash
+   ```bash
    streamlit run app.py
-```
+   ```
 
 ## Deploying to Streamlit Community Cloud
 
@@ -96,9 +105,9 @@ GEMINI_API_KEY=AIza...
 3. Under **Advanced settings**:
    - Python version: **3.11**
    - Secrets:
-```toml
+     ```toml
      GEMINI_API_KEY = "your-actual-key-here"
-```
+     ```
 4. Click **Deploy**.
 
 ## Customizing the knowledge base
@@ -111,9 +120,9 @@ folder so it re-populates on next run. Add new sports there **and** to the
 ## Troubleshooting
 
 - **ChromaDB sqlite error:**
-```bash
+  ```bash
   pip install pysqlite3-binary
-```
+  ```
   `src/database.py` auto-detects and uses it — no code changes needed.
 
 - **`duckduckgo_search` import error:** the package was renamed to `ddgs`
@@ -122,11 +131,11 @@ folder so it re-populates on next run. Add new sports there **and** to the
 
 - **`ModuleNotFoundError: No module named '_cffi_backend'`** (seen on some
   Windows installs): the `cryptography`/`cffi` install got corrupted.
-```bash
+  ```bash
   pip uninstall -y cryptography cffi
   pip install --upgrade --force-reinstall cffi
   pip install --upgrade --force-reinstall cryptography
-```
+  ```
 
 - **"Invalid format: please enter valid TOML"** when pasting Streamlit
   Cloud secrets: make sure the value is in quotes, e.g.
